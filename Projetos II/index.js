@@ -1,0 +1,1 @@
+// 1. Fazer um carrossel de imagens para a página inicial
