@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="./imgs/home/pfp_transparente.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <input type="text" id="login-nome" placeholder="Nome">
+        <input type="password" id="login-senha" placeholder="Senha">
+        <button onclick="fazerLogin()">Entrar</button>
+
+        <h2>Cadastro</h2>
+        <input type="text" id="cadastro-nome" placeholder="Nome">
+        <input type="password" id="cadastro-senha" placeholder="Senha">
+        <button onclick="cadastrarUsuario()">Cadastrar</button>
+    </div>
+
+    <script>
+        function cadastrarUsuario() {
+            let nome = document.getElementById("cadastro-nome").value.trim();
+            let senha = document.getElementById("cadastro-senha").value.trim();
+
+            if (nome === "" || senha === "") {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            fetch("http://localhost:8080/cadastrar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome, senha })
+            })
+            .then(res => res.json())
+            .then(data => alert(data.mensagem))
+            .catch(error => alert("Erro ao cadastrar! Verifique o servidor."));
+        }
+
+        function fazerLogin() {
+            let nome = document.getElementById("login-nome").value.trim();
+            let senha = document.getElementById("login-senha").value.trim();
+
+            if (nome === "" || senha === "") {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome, senha })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.sucesso) {
+                    alert(`Bem-vindo, ${nome}!`);
+                } else {
+                    alert("Nome ou senha incorretos!");
+                }
+            })
+            .catch(error => alert("Erro ao fazer login! Verifique o servidor."));
+        }
+    </script>
+</body>
+</html>
